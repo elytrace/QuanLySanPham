@@ -6,10 +6,19 @@ package quanlysanpham;
 
 import java.awt.FileDialog;
 import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -126,7 +135,7 @@ public class ThemSanPham extends javax.swing.JFrame {
         imagePanel.setLayout(imagePanelLayout);
         imagePanelLayout.setHorizontalGroup(
             imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 222, Short.MAX_VALUE)
+            .addGap(0, 220, Short.MAX_VALUE)
         );
         imagePanelLayout.setVerticalGroup(
             imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +185,7 @@ public class ThemSanPham extends javax.swing.JFrame {
                                             .addComponent(cbType, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                         .addGap(18, 18, 18)
                         .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,7 +289,23 @@ public class ThemSanPham extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void DisplayImage(String file) {
-        
+        try {
+            BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + "/images/" + file));
+            Image dimg = image.getScaledInstance(imagePanel.getWidth(), imagePanel.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon(dimg);
+            JLabel label = new JLabel();
+            label.setIcon(icon);
+            label.setText("hjhj");
+            imagePanel.add(label);
+            imagePanel.setLayout(null);
+            label.setLocation(0, 0);
+            label.setSize(imagePanel.getSize());
+            label.setVisible(true);
+            imagePanel.setVisible(true);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ThemSanPham.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private boolean isPriceValidate() {

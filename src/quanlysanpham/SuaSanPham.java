@@ -6,10 +6,19 @@ package quanlysanpham;
 
 import java.awt.FileDialog;
 import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 /**
  *
@@ -58,11 +67,34 @@ public class SuaSanPham extends javax.swing.JFrame {
                 tfIntroduce.setText(rs.getString("gioiThieuSP"));
                 tfPrice.setText(rs.getString("giaSP"));
                 cbType.setSelectedIndex(rs.getInt("manhom"));
+                
+                DisplayImage(tfImage.getText());
             }
         }
         catch(SQLException ex) {
             java.util.logging.Logger.getLogger(SuaSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Lỗi SQL!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void DisplayImage(String file) {
+        try {
+            JOptionPane.showMessageDialog(this, System.getProperty("user.dir") + "/images/" + file, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + "/images/" + file));
+            Image dimg = image.getScaledInstance(imagePanel.getWidth(), imagePanel.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon(dimg);
+            JLabel label = new JLabel();
+            label.setIcon(icon);
+            label.setText("hjhj");
+            imagePanel.add(label);
+            imagePanel.setLayout(null);
+            label.setLocation(0, 0);
+            label.setSize(imagePanel.getSize());
+            label.setVisible(true);
+            imagePanel.setVisible(true);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(SuaSanPham.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -281,7 +313,7 @@ public class SuaSanPham extends javax.swing.JFrame {
             
         }
         catch(HeadlessException | SQLException ex) {
-            java.util.logging.Logger.getLogger(ThemSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SuaSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Lỗi SQL!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAcceptActionPerformed
@@ -303,9 +335,6 @@ public class SuaSanPham extends javax.swing.JFrame {
         DisplayImage(file);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void DisplayImage(String file) {
-        
-    }
     
     private boolean isPriceValidate() {
         for(var c : tfPrice.getText().toCharArray()) {
